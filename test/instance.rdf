@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:ns0="http://www.example.org/voc/">
+
+  <rdf:Description rdf:about="http://www.example.org/data/Tesla_Inc">
+    <rdf:type rdf:resource="http://www.example.org/voc/Organisation"/>
+    <ns0:name>Tesla, Inc.</ns0:name>
+    <ns0:creation rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2003-07-01</ns0:creation>
+    <ns0:ceo>
+      <ns0:Person rdf:about="http://www.example.org/data/Elon_Musk">
+        <ns0:birthName>Elon Musk</ns0:birthName>
+        <ns0:age rdf:datatype="http://www.w3.org/2001/XMLSchema#int">46</ns0:age>
+      </ns0:Person>
+    </ns0:ceo>
+
+    <ns0:location>
+      <ns0:City>
+        <ns0:name>Palo Alto</ns0:name>
+        <ns0:country>
+          <ns0:Country>
+            <ns0:name>US</ns0:name>
+          </ns0:Country>
+        </ns0:country>
+
+        <ns0:is_location_of rdf:resource="http://www.example.org/data/Tesla_Inc"/>
+      </ns0:City>
+    </ns0:location>
+
+  </rdf:Description>
+
+</rdf:RDF>

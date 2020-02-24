@@ -1,0 +1,9 @@
+N(1)[Namespace]{iri:"String",prefix:"String"}
+N(-1207662857)[nss1_City]{nss1_name:"string"}
+N(-355565210)[nss1_Organisation]{nss1_name:"string",nss1_creation:"date"}
+N(1610792392)[nss1_Country]{nss1_name:"string"}
+N(-555010655)[nss1_Person]{nss1_birthName:"string",nss1_age:"int"}
+E(-1207662857)(-355565210)[nss1_is_location_of]{}
+E(-1207662857)(1610792392)[nss1_country]{}
+E(-355565210)(-1207662857)[nss1_location]{}
+E(-355565210)(-555010655)[nss1_ceo]{}
