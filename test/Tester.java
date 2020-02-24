@@ -46,9 +46,9 @@ public class Tester {
         DatabaseMapping dbm = new DatabaseMapping();
         dbm.run("instance.ttl", "schema.ttl");
         PropertyGraph pgi = dbm.getPGInstance();
-        pgi.exportAsYPG("./temp/ddm-instance.pgf");
+        pgi.exportAsYPG("/tmp/ddm-instance.pgf");
         PropertyGraph pgs = dbm.getPGSchema();
-        pgs.exportAsYPG("./temp/ddm-schema.pgf");
+        pgs.exportAsYPG("/tmp/ddm-schema.pgf");
 
         System.out.println("OK");
     }
