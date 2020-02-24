@@ -52,7 +52,8 @@ public class Reader2 implements StreamRDF {
                 pg.addNodeProperty(s.hashCode(), "iri", s.getURI());
             } else {
                 pg.addNode(s.hashCode(), "BlankNode");
-                pg.addNodeProperty(s.hashCode(), "id", s.getBlankNodeId().getLabelString());
+                String id = "_:b" + s.hashCode();
+                pg.addNodeProperty(s.hashCode(), "id", id);
             }
         }
 
@@ -64,7 +65,8 @@ public class Reader2 implements StreamRDF {
                     pg.addNodeProperty(o.hashCode(), "iri", o.getURI());
                 } else {
                     pg.addNode(o.hashCode(), "BlankNode");
-                    pg.addNodeProperty(o.hashCode(), "id", o.getBlankNodeId().getLabelString());
+                    String id = "_:b" + o.hashCode();
+                    pg.addNodeProperty(o.hashCode(), "id", id);
                 }
             }
             pg.addEdge(triple.hashCode(),"ObjectProperty", s.hashCode(), o.hashCode());

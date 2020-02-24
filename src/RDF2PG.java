@@ -35,29 +35,29 @@ public class RDF2PG {
                 System.out.println("Running Simple Mapping");
                 SimpleMapping smap = new SimpleMapping();
                 PropertyGraph pg = smap.run(input_filename);
-                pg.exportAsYPG("instance-output.pgf");
-                System.out.println("Output: instance-output.pgf");
+                pg.exportAsYPG("instance.ypg");
+                System.out.println("Output: instance.ypg");
             } else if (opt.compareTo("-gdm") == 0) {
                 System.out.println("Running General Database Mapping");
                 GeneralDatabaseMapping gdm = new GeneralDatabaseMapping();
                 gdm.run(input_filename);
                 PropertyGraph instance = gdm.getPGInstance();
-                instance.exportAsYPG("instance-output.pgf");
+                instance.exportAsYPG("instance.ypg");
                 PropertyGraph schema = gdm.getPGSchema();
-                schema.exportAsYPG("schema-output.pgf");
-                System.out.println("Output: instance-output.pgf and schema-output.pgf");
+                schema.exportAsYPG("schema.ypg");
+                System.out.println("Output: instance.ypg and schema.ypg");
             } else if (opt.compareTo("-dsm") == 0) {
                 System.out.println("Running Direct Schema Mapping");
                 //DatabaseMapping dbm = new DatabaseMapping();
                 //PropertyGraph pg = dbm.runSchemaMapping(input_filename);
                 //pg.exportAsYPG("schema-output.pgf");
-                System.out.println("Output: schema-output.pgf");
+                System.out.println("Output: schema.ypg");
             } else if (opt.compareTo("-dim") == 0) {
                 System.out.println("Running Direct Instance Mapping");
                 //DatabaseMapping dbm = new DatabaseMapping();
                 //PropertyGraph pg = dbm.runInstanceMapping(input_filename);
                 //pg.exportAsYPG("instance-output.pgf");
-                System.out.println("instance-output.pgf");
+                System.out.println("instance.ypg");
             } else {
                 System.out.println("Invalid option");
             }
@@ -74,10 +74,10 @@ public class RDF2PG {
                 DatabaseMapping dbm = new DatabaseMapping();
                 dbm.run(RDF_filename, RDFS_filename);
                 PropertyGraph pg_schema = dbm.getPGSchema();
-                pg_schema.exportAsYPG("schema-output.pgf");
+                pg_schema.exportAsYPG("schema.ypg");
                 PropertyGraph pg_instance = dbm.getPGInstance();
-                pg_instance.exportAsYPG("instance-output.pgf");
-                System.out.println("Output: instance-output.pgf and schema-output.pgf");
+                pg_instance.exportAsYPG("instance.ypg");
+                System.out.println("Output: instance.ypg and schema.ypg");
             } else {
                 System.out.println("Invalid option");
             }

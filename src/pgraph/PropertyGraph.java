@@ -32,6 +32,8 @@ public class PropertyGraph {
     HashMap<Integer, Integer> sourcenodes = new HashMap();
     HashMap<Integer, Integer> targetnodes = new HashMap();
     Integer free_id = 1;
+    HashMap<Integer,Integer> map = new HashMap();
+    
 
     public PropertyGraph() {
     }
@@ -144,6 +146,54 @@ public class PropertyGraph {
                 String labels = entry.getValue();
                 String props = nodeprops.get(nid);
                 if (labels.compareTo("null") == 0) {
+                    labels = "";
+                } else {
+                    labels = "[" + labels.replace(",",":") + "]";
+                }
+                if (null == props) {
+                    props = "{}";
+                } else {
+                    props = "{" + props + "}";
+                }
+                writer.write(nid + labels + ":" + props + "\n");
+            }
+
+            //export edges
+            for (Map.Entry<Integer, String> entry : edges.entrySet()) {
+                Integer eid = entry.getKey();
+                String labels = entry.getValue();
+                String props = edgeprops.get(eid);
+                Integer source = sourcenodes.get(eid);
+                Integer target = targetnodes.get(eid);
+                if (labels.compareTo("null") == 0) {
+                    labels = "";
+                }else{
+                    labels = labels.replace(",",":");
+                }
+                if (null == props) {
+                    writer.write("(" + source + ")-[" + labels + "]->(" + target + ")" + "\n");
+                } else {
+                    writer.write("(" + source + ")-[" + labels + " {" + props + "}]->(" + target + ")" + "\n");
+                }
+            }
+
+            writer.close();
+
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+    }
+    
+    public void exportAsPGF(String outputFileName) {
+        try {
+            Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFileName), "UTF-8"));
+
+            //export nodes
+            for (Map.Entry<Integer, String> entry : nodes.entrySet()) {
+                Integer nid = entry.getKey();
+                String labels = entry.getValue();
+                String props = nodeprops.get(nid);
+                if (labels.compareTo("null") == 0) {
                     labels = "[]";
                 } else {
                     labels = "[" + labels + "]";
@@ -182,137 +232,57 @@ public class PropertyGraph {
             System.out.println("Error: " + ex.getMessage());
         }
 
-    }
+    }    
+    
+    public void exportAsCypher(String outputFileName){
+        Integer nextid = 1;
+        try {
+            Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFileName), "UTF-8"));
 
-    /*
-    public Iterator<PGNode> getNodes() {
-        return nodes.iterator();
-    }
-
-    public Iterator<PGEdge> getEdges() {
-        return edges.iterator();
-    }
-
-    public Iterator<PGProperty> getProperties() {
-        return properties.iterator();
-    }
-
-    public PGNode createNode() {
-        PGNode node = new PGNode();
-        node.setId(free_id++);
-        nodes.add(node);
-        return node;
-    }
-
-    public PGNode createNode(String label) {
-        PGNode node = new PGNode();
-        node.setId(free_id++);
-        node.addLabel(label);
-        nodes.add(node);
-        return node;
-    }
-
-    public PGEdge createEdge(PGNode source, PGNode target) {
-        PGEdge edge = new PGEdge(source, target);
-        edge.setId(free_id++);
-        edges.add(edge);
-        return edge;
-    }
-
-    public PGEdge createEdge(String label, PGNode source, PGNode target) {
-        PGEdge edge = new PGEdge(label, source, target);
-        edge.setId(free_id++);
-        this.edges.add(edge);
-        return edge;
-    }
-
-    public PGProperty createProperty(PGNode owner, String name, String value) {
-        PGProperty prop = new PGProperty(owner, name, value);
-        prop.setId(free_id++);
-        this.properties.add(prop);
-        if (!nodes.contains(owner)) {
-            nodes.add(owner);
-        }
-        prop.setOwner(owner);
-        owner.addProperty(prop);
-        return prop;
-    }
-
-    public PGProperty createProperty(PGEdge owner, String name, String value) {
-        PGProperty prop = new PGProperty(owner, name, value);
-        prop.setId(free_id++);
-        this.properties.add(prop);
-        if (!edges.contains(owner)) {
-            edges.add(owner);
-        }
-        prop.setOwner(owner);
-        owner.addProperty(prop);
-        return prop;
-    }
-
-    public PGNode getNodeById(int id) {
-        Iterator<PGNode> it = this.nodes.iterator();
-        while (it.hasNext()) {
-            PGNode node = it.next();
-            if (node.id == id) {
-                return node;
+            //export nodes
+            for (Map.Entry<Integer, String> entry : nodes.entrySet()) {
+                Integer nid = nextid++;
+                map.put(entry.getKey(),nid);
+                String labels = entry.getValue();
+                String props = nodeprops.get(entry.getKey());
+                if (labels.compareTo("null") == 0) {
+                    labels = "";
+                } else {
+                    labels = ":" + labels.replace(",",":");
+                }
+                if (null == props) {
+                    props = "";
+                } else {
+                    props = "{" + props + "}";
+                }
+                writer.write("CREATE (n" + nid + labels + props + ")\n");
             }
-        }
-        return null;
-    }
 
-    public PGEdge getEdgeById(int id) {
-        Iterator<PGEdge> it = this.edges.iterator();
-        while (it.hasNext()) {
-            PGEdge edge = it.next();
-            if (edge.id == id) {
-                return edge;
+            //export edges
+            for (Map.Entry<Integer, String> entry : edges.entrySet()) {
+                Integer eid = nextid++;
+                Integer source = map.get(sourcenodes.get(entry.getKey()));
+                Integer target = map.get(targetnodes.get(entry.getKey()));
+                String labels = entry.getValue();
+                String props = edgeprops.get(entry.getKey());
+                if (labels.compareTo("null") == 0) {
+                    labels = "";
+                } else {
+                    labels = ":" + labels.replace(",",":");
+                }
+                if (null == props) {
+                    props = "";
+                } else {
+                    props = "{" + props + "}";
+                }
+                writer.write("CREATE (n" + source + ")-[e" + eid + labels + props + "]->(n" + target + ")\n");
             }
-        }
-        return null;
-    }
+            writer.close();
 
-    public PGProperty getPropertyById(int id) {
-        Iterator<PGProperty> it = this.properties.iterator();
-        while (it.hasNext()) {
-            PGProperty prop = it.next();
-            if (prop.getId() == id) {
-                return prop;
-            }
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
         }
-        return null;
     }
-     */
- /*
-    public void addNode(Node node){
-        if(!nodes.contains(node)){
-            nodes.add(node);
-            node.setId(id++);
-            Iterator<Property> it = node.getProperties();
-            while(it.hasNext()){
-                Property pt = it.next();
-                this.addProperty(pt);
-            }
-        }
-    }*/
- /*
-    public void AddEdge(Edge edge){
-        if(!edges.contains(edge)){
-            edges.add(edge);
-            this.addNode(edge.getSourceNode());
-            this.addNode(edge.getTargetNode());            
-            Iterator<Property> it = edge.getProperties();
-            while(it.hasNext()){
-                Property pt = it.next();
-                this.addProperty(pt);
-            }
-        }
-    }*/
- /*
-    private void addProperty(Property property){
-        if(!propertys.contains(property)){
-            propertys.add(property);
-            property.setId(id++);
-        }
-    }*/
+    
+
 }
