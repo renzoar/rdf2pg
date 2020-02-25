@@ -1,3 +1,9 @@
+
+import maps.DatabaseMapping;
+import maps.GeneralDatabaseMapping;
+import maps.SimpleMapping;
+import pgraph.PropertyGraph;
+
 /* 
  * Copyright 2020 Renzo Angles (http://renzoangles.com/)
  * 
@@ -13,18 +19,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import maps.DatabaseMapping;
-import maps.GeneralDatabaseMapping;
-import maps.SimpleMapping;
-import pgraph.PropertyGraph;
 
-public class RDF2PG {
-
+public class Neo4jTest {
+    
     public static void main(String[] args) {
         long itime;
         long etime;
         //BasicConfigurator.configure(); //to avoid log4j warning
-        System.out.println("rdf2pg");
+        System.out.println("rdf2pg (for Neo4j)");
         System.out.println("Java app to transform an RDF database into a Property Graph database (i.e. schema and instance data).");
         if (args.length == 2) {
             String opt = String.valueOf(args[0]);
@@ -34,29 +36,29 @@ public class RDF2PG {
                 System.out.println("Running Simple Mapping");
                 SimpleMapping smap = new SimpleMapping();
                 PropertyGraph pg = smap.run(input_filename);
-                pg.exportAsYPG("instance.ypg");
-                System.out.println("Output: instance.ypg");
+                pg.exportAsCypher("instance.txt");
+                System.out.println("Output: instance.txt");
             } else if (opt.compareTo("-gdm") == 0) {
                 System.out.println("Running General Database Mapping");
                 GeneralDatabaseMapping gdm = new GeneralDatabaseMapping();
                 gdm.run(input_filename);
                 PropertyGraph instance = gdm.getPGInstance();
-                instance.exportAsYPG("instance.ypg");
+                instance.exportAsCypher("instance.txt");
                 PropertyGraph schema = gdm.getPGSchema();
-                schema.exportAsYPG("schema.ypg");
-                System.out.println("Output: instance.ypg and schema.ypg");
+                schema.exportAsCypher("schema.txt");
+                System.out.println("Output: instance.txt and schema.txt");
             } else if (opt.compareTo("-dsm") == 0) {
                 System.out.println("Running Direct Schema Mapping");
                 DatabaseMapping dbm = new DatabaseMapping();
                 PropertyGraph pg = dbm.runSchemaMapping(input_filename);
-                pg.exportAsYPG("schema.ypg");
-                System.out.println("Output: schema.ypg");
+                pg.exportAsCypher("schema.txt");
+                System.out.println("Output: schema.txt");
             } else if (opt.compareTo("-dim") == 0) {
                 System.out.println("Running Direct Instance Mapping");
                 DatabaseMapping dbm = new DatabaseMapping();
                 PropertyGraph pg = dbm.runInstanceMapping(input_filename);
-                pg.exportAsYPG("instance.ypg");
-                System.out.println("Output: instance.ypg");
+                pg.exportAsCypher("instance.txt");
+                System.out.println("Output: instance.txt");
             } else {
                 System.out.println("Invalid option");
             }
@@ -98,5 +100,6 @@ public class RDF2PG {
             return;
         }
     }
-
+    
+    
 }

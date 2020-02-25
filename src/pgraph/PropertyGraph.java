@@ -137,14 +137,18 @@ public class PropertyGraph {
     }    
 
     public void exportAsYPG(String outputFileName) {
+        Integer id = 1;
         try {
             Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFileName), "UTF-8"));
 
             //export nodes
             for (Map.Entry<Integer, String> entry : nodes.entrySet()) {
-                Integer nid = entry.getKey();
+                Integer key = entry.getKey();
+                map.put(key, id);
+                Integer nid = id;
+                id++;
                 String labels = entry.getValue();
-                String props = nodeprops.get(nid);
+                String props = nodeprops.get(key);
                 if (labels.compareTo("null") == 0) {
                     labels = "";
                 } else {
@@ -160,11 +164,13 @@ public class PropertyGraph {
 
             //export edges
             for (Map.Entry<Integer, String> entry : edges.entrySet()) {
-                Integer eid = entry.getKey();
+                Integer key = entry.getKey();
+                Integer eid = id;
+                id++;
                 String labels = entry.getValue();
-                String props = edgeprops.get(eid);
-                Integer source = sourcenodes.get(eid);
-                Integer target = targetnodes.get(eid);
+                String props = edgeprops.get(key);
+                Integer source = map.get(sourcenodes.get(key));
+                Integer target = map.get(targetnodes.get(key));
                 if (labels.compareTo("null") == 0) {
                     labels = "";
                 }else{
@@ -176,9 +182,7 @@ public class PropertyGraph {
                     writer.write("(" + source + ")-[" + labels + " {" + props + "}]->(" + target + ")" + "\n");
                 }
             }
-
             writer.close();
-
         } catch (Exception ex) {
             System.out.println("Error: " + ex.getMessage());
         }

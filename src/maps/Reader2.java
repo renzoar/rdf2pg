@@ -74,11 +74,11 @@ public class Reader2 implements StreamRDF {
 
         } else {
             //the object is a literal 
-            pg.addNode(o.hashCode(), "Literal");
-            pg.addNodeProperty(o.hashCode(), "value", o.getLiteral().getValue().toString());
-            pg.addNodeProperty(o.hashCode(), "type", o.getLiteral().getDatatypeURI());
-            pg.addEdge(triple.hashCode(),"DatatypeProperty", s.hashCode(), o.hashCode());
-            pg.addEdgeProperty(triple.hashCode(), "type", p.getURI());
+            Integer nid = pg.addNode("Literal");
+            pg.addNodeProperty(nid, "value", o.getLiteral().getValue().toString());
+            pg.addNodeProperty(nid, "type", o.getLiteral().getDatatypeURI());
+            Integer eid = pg.addEdge("DatatypeProperty", s.hashCode(), nid);
+            pg.addEdgeProperty(eid, "type", p.getURI());
         }
         cnt++;
         if (cnt % 1000 == 0) {
