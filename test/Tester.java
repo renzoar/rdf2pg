@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import maps.DatabaseMapping;
-import maps.GeneralDatabaseMapping;
+import maps.DirectMapping;
+import maps.GeneralMapping;
 import maps.SimpleMapping;
 import pgraph.PropertyGraph;
 
@@ -43,7 +43,7 @@ public class Tester {
         */
                 
         System.out.println("Database Mapping");
-        DatabaseMapping dbm = new DatabaseMapping();
+        DirectMapping dbm = new DirectMapping();
         dbm.run("instance.ttl", "schema.ttl");
         PropertyGraph pgi = dbm.getPGInstance();
         pgi.exportAsYPG("/tmp/ddm-instance.pgf");

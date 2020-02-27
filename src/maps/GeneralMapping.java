@@ -21,12 +21,12 @@ import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.util.FileManager;
 import pgraph.PropertyGraph;
 
-public class GeneralDatabaseMapping {
+public class GeneralMapping {
 
     PropertyGraph pg_instance;
     PropertyGraph pg_schema;
 
-    public GeneralDatabaseMapping() {
+    public GeneralMapping() {
         pg_instance = new PropertyGraph();
         pg_schema = new PropertyGraph();
     }

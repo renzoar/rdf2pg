@@ -32,14 +32,14 @@ import pgraph.PropertyGraph;
  *
  * @author renzo
  */
-public class DatabaseMapping {
+public class DirectMapping {
 
     private PropertyGraph pg_instance;
     private PropertyGraph pg_schema;
     private HashMap<String, String> prefixes;
     private int free_prefix = 1;
 
-    public DatabaseMapping() {
+    public DirectMapping() {
         pg_instance = new PropertyGraph();
         pg_schema = new PropertyGraph();
         prefixes = new HashMap();

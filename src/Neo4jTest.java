@@ -1,6 +1,6 @@
 
-import maps.DatabaseMapping;
-import maps.GeneralDatabaseMapping;
+import maps.DirectMapping;
+import maps.GeneralMapping;
 import maps.SimpleMapping;
 import pgraph.PropertyGraph;
 
@@ -40,7 +40,7 @@ public class Neo4jTest {
                 System.out.println("Output: instance.txt");
             } else if (opt.compareTo("-gdm") == 0) {
                 System.out.println("Running General Database Mapping");
-                GeneralDatabaseMapping gdm = new GeneralDatabaseMapping();
+                GeneralMapping gdm = new GeneralMapping();
                 gdm.run(input_filename);
                 PropertyGraph instance = gdm.getPGInstance();
                 instance.exportAsCypher("instance.txt");
@@ -49,13 +49,13 @@ public class Neo4jTest {
                 System.out.println("Output: instance.txt and schema.txt");
             } else if (opt.compareTo("-dsm") == 0) {
                 System.out.println("Running Direct Schema Mapping");
-                DatabaseMapping dbm = new DatabaseMapping();
+                DirectMapping dbm = new DirectMapping();
                 PropertyGraph pg = dbm.runSchemaMapping(input_filename);
                 pg.exportAsCypher("schema.txt");
                 System.out.println("Output: schema.txt");
             } else if (opt.compareTo("-dim") == 0) {
                 System.out.println("Running Direct Instance Mapping");
-                DatabaseMapping dbm = new DatabaseMapping();
+                DirectMapping dbm = new DirectMapping();
                 PropertyGraph pg = dbm.runInstanceMapping(input_filename);
                 pg.exportAsCypher("instance.txt");
                 System.out.println("Output: instance.txt");
@@ -72,13 +72,13 @@ public class Neo4jTest {
             String rdfs_filename = String.valueOf(args[2]);
             if (opt.compareTo("-ddm") == 0) {
                 System.out.println("Running Direct Database Mapping");
-                DatabaseMapping dbm = new DatabaseMapping();
+                DirectMapping dbm = new DirectMapping();
                 dbm.run(rdf_filename, rdfs_filename);
                 PropertyGraph pg_schema = dbm.getPGSchema();
-                pg_schema.exportAsYPG("schema.ypg");
+                pg_schema.exportAsCypher("schema.txt");
                 PropertyGraph pg_instance = dbm.getPGInstance();
-                pg_instance.exportAsYPG("instance.ypg");
-                System.out.println("Output: instance.ypg and schema.ypg");
+                pg_instance.exportAsCypher("instance.txt");
+                System.out.println("Output: instance.txt and schema.txt");
             } else {
                 System.out.println("Invalid option");
             }

@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import maps.DatabaseMapping;
-import maps.GeneralDatabaseMapping;
+import maps.DirectMapping;
+import maps.GeneralMapping;
 import maps.SimpleMapping;
 import pgraph.PropertyGraph;
 
@@ -38,7 +38,7 @@ public class RDF2PG {
                 System.out.println("Output: instance.ypg");
             } else if (opt.compareTo("-gdm") == 0) {
                 System.out.println("Running General Database Mapping");
-                GeneralDatabaseMapping gdm = new GeneralDatabaseMapping();
+                GeneralMapping gdm = new GeneralMapping();
                 gdm.run(input_filename);
                 PropertyGraph instance = gdm.getPGInstance();
                 instance.exportAsYPG("instance.ypg");
@@ -47,13 +47,13 @@ public class RDF2PG {
                 System.out.println("Output: instance.ypg and schema.ypg");
             } else if (opt.compareTo("-dsm") == 0) {
                 System.out.println("Running Direct Schema Mapping");
-                DatabaseMapping dbm = new DatabaseMapping();
+                DirectMapping dbm = new DirectMapping();
                 PropertyGraph pg = dbm.runSchemaMapping(input_filename);
                 pg.exportAsYPG("schema.ypg");
                 System.out.println("Output: schema.ypg");
             } else if (opt.compareTo("-dim") == 0) {
                 System.out.println("Running Direct Instance Mapping");
-                DatabaseMapping dbm = new DatabaseMapping();
+                DirectMapping dbm = new DirectMapping();
                 PropertyGraph pg = dbm.runInstanceMapping(input_filename);
                 pg.exportAsYPG("instance.ypg");
                 System.out.println("Output: instance.ypg");
@@ -70,7 +70,7 @@ public class RDF2PG {
             String rdfs_filename = String.valueOf(args[2]);
             if (opt.compareTo("-ddm") == 0) {
                 System.out.println("Running Direct Database Mapping");
-                DatabaseMapping dbm = new DatabaseMapping();
+                DirectMapping dbm = new DirectMapping();
                 dbm.run(rdf_filename, rdfs_filename);
                 PropertyGraph pg_schema = dbm.getPGSchema();
                 pg_schema.exportAsYPG("schema.ypg");
