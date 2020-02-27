@@ -3,10 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/renzo/GitHub/rdf2pg/src/Neo4jTest.java</file>
-            <file>file:/Users/renzo/GitHub/rdf2pg/src/pgraph/PropertyGraph.java</file>
-            <file>file:/Users/renzo/GitHub/rdf2pg/src/maps/Reader2.java</file>
+            <file>file:/Users/renzo/GitHub/rdf2pg/test/Tester.java</file>
+            <file>file:/Users/renzo/GitHub/rdf2pg/src/maps/DirectMapping.java</file>
             <file>file:/Users/renzo/GitHub/rdf2pg/src/RDF2PG.java</file>
+            <file>file:/Users/renzo/GitHub/rdf2pg/src/Neo4jTest.java</file>
         </group>
     </open-files>
 </project-private>
