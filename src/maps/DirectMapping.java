@@ -75,6 +75,8 @@ public class DirectMapping {
 
         SchemaReader schema_reader = new SchemaReader();
         Schema schema = schema_reader.run(input_schema_filename);
+        
+        //Process value properties
         Iterator<ResourceClass> classes = schema.getResourceClasses();
         while (classes.hasNext()) {
             ResourceClass rc = classes.next();
@@ -83,7 +85,6 @@ public class DirectMapping {
             }
             String class_name = this.addPrefix(rc.getNamespace()) + "_" + rc.getName();
             Integer node = pg_schema.addNode(rc.hashCode(), class_name);
-
             Iterator<PropertyClass> out_pc_it = rc.getOutgoingPropClasses();
             while (out_pc_it.hasNext()) {
                 PropertyClass pc = out_pc_it.next();
@@ -114,7 +115,7 @@ public class DirectMapping {
                 while (range_it.hasNext()) {
                     ResourceClass rc2 = range_it.next();
                     if (!rc2.isDatatype()) {
-                        pg_schema.addEdge(pc.hashCode(), prop_name, rc1.hashCode(), rc2.hashCode());
+                        pg_schema.addEdge(prop_name, rc1.hashCode(), rc2.hashCode());
                     }
                 }
             }

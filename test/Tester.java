@@ -44,11 +44,11 @@ public class Tester {
                 
         System.out.println("Database Mapping");
         DirectMapping dbm = new DirectMapping();
-        dbm.run("instance.ttl", "schema.ttl");
+        dbm.run("sp10k-instance.nt", "sp10k-schema.ttl");
         PropertyGraph pgi = dbm.getPGInstance();
-        pgi.exportAsYPG("/tmp/ddm-instance.pgf");
+        pgi.exportAsYPG("./test/ddm-instance.ypg");
         PropertyGraph pgs = dbm.getPGSchema();
-        pgs.exportAsYPG("/tmp/ddm-schema.pgf");
+        pgs.exportAsYPG("./test/ddm-schema.ypg");
 
         System.out.println("OK");
     }
