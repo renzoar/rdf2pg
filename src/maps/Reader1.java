@@ -41,6 +41,7 @@ public class Reader1 implements StreamRDF {
 
     @Override
     public void triple(Triple triple) {
+        cnt++;
         Node s = triple.getSubject();
         Node p = triple.getPredicate();
         Node o = triple.getObject();
@@ -64,10 +65,6 @@ public class Reader1 implements StreamRDF {
             }
         } else {
             pg.addNodeProperty(s.hashCode(), p.getLocalName(), o.getLiteral().getValue().toString());
-        }
-        cnt++;
-        if(cnt % 1000 == 0){
-            System.out.println("Triples transformed: " + cnt);
         }
     }   
 
@@ -102,6 +99,7 @@ public class Reader1 implements StreamRDF {
     @Override
     public void finish() {
         //System.out.println("finish");
+        System.out.println("Number of RDF triples processed: " + cnt);
     }
 
 }

@@ -24,7 +24,6 @@ import org.apache.jena.vocabulary.RDF;
 import pgraph.PropertyGraph;
 
 public class Reader3 implements StreamRDF {
-
     int cnt = 0;
     PropertyGraph pg_instance;
     private final HashMap<String, String> prefixes;
@@ -54,6 +53,7 @@ public class Reader3 implements StreamRDF {
 
     @Override
     public void triple(Triple triple) {
+        cnt++;
         Node s = triple.getSubject();
         Node p = triple.getPredicate();
         Node o = triple.getObject();
@@ -139,6 +139,7 @@ public class Reader3 implements StreamRDF {
 
     @Override
     public void finish() {
+        System.out.println("Number of RDF triples processed: " + cnt);
         //creates nodes for namespace
         for (HashMap.Entry<String, String> entry : prefixes.entrySet()) {
             Integer node_id = pg_instance.addNode("Namespace");

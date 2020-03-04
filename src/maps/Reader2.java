@@ -22,7 +22,6 @@ import org.apache.jena.sparql.core.Quad;
 import pgraph.PropertyGraph;
 
 public class Reader2 implements StreamRDF {
-
     int cnt = 0;
     PropertyGraph pg;
 
@@ -41,6 +40,7 @@ public class Reader2 implements StreamRDF {
 
     @Override
     public void triple(Triple triple) {
+        cnt++;
         Node s = triple.getSubject();
         Node p = triple.getPredicate();
         Node o = triple.getObject();
@@ -80,10 +80,6 @@ public class Reader2 implements StreamRDF {
             Integer eid = pg.addEdge("DatatypeProperty", s.hashCode(), nid);
             pg.addEdgeProperty(eid, "type", p.getURI());
         }
-        cnt++;
-        if (cnt % 1000 == 0) {
-            System.out.println("Triples transformed: " + cnt);
-        }
     }
     
 
@@ -118,6 +114,7 @@ public class Reader2 implements StreamRDF {
     @Override
     public void finish() {
         //System.out.println("finish");
+        System.out.println("Number of RDF triples processed: " + cnt);
     }
 
 }
