@@ -30,14 +30,14 @@ public class RDF2PG {
             String opt = String.valueOf(args[0]);
             String input_filename = String.valueOf(args[1]);
             itime = System.currentTimeMillis();
-            if (opt.compareTo("-sim") == 0) {
-                System.out.println("Running Simple Mapping");
+            if (opt.compareTo("-sdm") == 0) {
+                System.out.println("Running Simple Database Mapping");
                 SimpleMapping smap = new SimpleMapping();
                 PropertyGraph pg = smap.run(input_filename);
                 pg.exportAsYPG("instance.ypg");
                 System.out.println("Output: instance.ypg");
             } else if (opt.compareTo("-gdm") == 0) {
-                System.out.println("Running General Database Mapping");
+                System.out.println("Running Generic Database Mapping");
                 GeneralMapping gdm = new GeneralMapping();
                 gdm.run(input_filename);
                 PropertyGraph instance = gdm.getPGInstance();
@@ -45,14 +45,14 @@ public class RDF2PG {
                 PropertyGraph schema = gdm.getPGSchema();
                 schema.exportAsYPG("schema.ypg");
                 System.out.println("Output: instance.ypg and schema.ypg");
-            } else if (opt.compareTo("-dsm") == 0) {
-                System.out.println("Running Direct Schema Mapping");
+            } else if (opt.compareTo("-csm") == 0) {
+                System.out.println("Running Complete Schema Mapping");
                 DirectMapping dbm = new DirectMapping();
                 PropertyGraph pg = dbm.runSchemaMapping(input_filename);
                 pg.exportAsYPG("schema.ypg");
                 System.out.println("Output: schema.ypg");
-            } else if (opt.compareTo("-dim") == 0) {
-                System.out.println("Running Direct Instance Mapping");
+            } else if (opt.compareTo("-cim") == 0) {
+                System.out.println("Running Complete Instance Mapping");
                 DirectMapping dbm = new DirectMapping();
                 PropertyGraph pg = dbm.runInstanceMapping(input_filename);
                 pg.exportAsYPG("instance.ypg");
@@ -68,8 +68,8 @@ public class RDF2PG {
             String opt = String.valueOf(args[0]);
             String rdf_filename = String.valueOf(args[1]);
             String rdfs_filename = String.valueOf(args[2]);
-            if (opt.compareTo("-ddm") == 0) {
-                System.out.println("Running Direct Database Mapping");
+            if (opt.compareTo("-cdm") == 0) {
+                System.out.println("Running Complete Database Mapping");
                 DirectMapping dbm = new DirectMapping();
                 dbm.run(rdf_filename, rdfs_filename);
                 PropertyGraph pg_schema = dbm.getPGSchema();
@@ -86,15 +86,15 @@ public class RDF2PG {
         } else {
             System.out.println("Usage:");
             System.out.println("// Simple instance mapping");
-            System.out.println("$ java -jar rdf2pg -sim <RDF_filename>");
+            System.out.println("$ java -jar rdf2pg -sdm <RDF_filename>");
             System.out.println("// General database mapping (schema-independent)");
             System.out.println("$ java -jar rdf2pg -gdm <RDF_filename>");
             System.out.println("// Direct database mapping (schema-dependent)");
-            System.out.println("$ java -jar rdf2pg -ddm <RDF_filename> <RDFS_filename>");
+            System.out.println("$ java -jar rdf2pg -cdm <RDF_filename> <RDFS_filename>");
             System.out.println("// Direct instance mapping");
-            System.out.println("$ java -jar rdf2pg -dim <RDF_filename>");
+            System.out.println("$ java -jar rdf2pg -cim <RDF_filename>");
             System.out.println("// Direct schema mapping");
-            System.out.println("$ java -jar rdf2pg -dsm <RDFS_filename>");
+            System.out.println("$ java -jar rdf2pg -csm <RDFS_filename>");
             return;
         }
     }
