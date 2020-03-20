@@ -39,6 +39,6 @@
 <http://www.example.org/voc/country> rdfs:range <http://www.example.org/voc/Country> .
 
 <http://www.example.org/voc/is_location_of> rdf:type rdf:Property .
-<http://www.example.org/voc/is_location_of> rdfs:domain <http://www.example.org/voc/City> .
+<http://www.example.org/voc/is_location_of> rdfs:domain <http://www.example.org/voc/Country> .
 <http://www.example.org/voc/is_location_of> rdfs:range <http://www.example.org/voc/Organisation> .
 

@@ -13,72 +13,74 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package maps;
+package maps.simple;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.Triple;
 import org.apache.jena.riot.system.StreamRDF;
 import org.apache.jena.sparql.core.Quad;
 import org.apache.jena.vocabulary.RDF;
-import pgraph.PropertyGraph;
+import pgraph.PGNode;
+import writers.PGWriter;
 
-public class Reader1 implements StreamRDF {
-    int cnt = 0;
-    PropertyGraph pg;
+/**
+ *
+ * @author renzo
+ */
+public class Reader1a implements StreamRDF {
+    private int pos = 1;
+    public HashMap<Integer, Integer> pos_hash_map;
+    public HashMap<Integer, PGNode> hash_node_map;
+    private PGWriter pgwriter;
 
-    public Reader1() {
-
+    public Reader1a(PGWriter _pgwriter) {
+        pos_hash_map = new HashMap();
+        hash_node_map = new HashMap();
+        pgwriter = _pgwriter;
     }
-
-    public PropertyGraph getPG() {
-        return pg;
-    }
-
+    
     @Override
     public void start() {
-        pg = new PropertyGraph();
     }
 
     @Override
     public void triple(Triple triple) {
-        cnt++;
         Node s = triple.getSubject();
+        int subj_pos = pos++;
         Node p = triple.getPredicate();
+        int pred_pos = pos++;
         Node o = triple.getObject();
-        
-        if(!pg.hasNode(s.hashCode())){
-            pg.addNode(s.hashCode());
+        int obj_pos = pos++;
+
+        PGNode snode = hash_node_map.get(s.hashCode());
+        if (snode == null) {
+            snode = new PGNode(subj_pos);
+            pos_hash_map.put(subj_pos, s.hashCode());
+            hash_node_map.put(s.hashCode(), snode);
+        }else{
+            pos_hash_map.put(subj_pos, s.hashCode());
         }
 
         //the object is a resource
         if (o.isURI() || o.isBlank()) {
             if (p.getURI().compareTo(RDF.type.getURI()) == 0) {
                 String label = o.getLocalName();
-                pg.addNodeLabel(s.hashCode(), label);
+                snode.addLabel(label);
             } else {
-                if(!pg.hasNode(o.hashCode())){
-                    pg.addNode(o.hashCode());
+                PGNode tnode = hash_node_map.get(o.hashCode());
+                if (tnode == null) {
+                    tnode = new PGNode(obj_pos);
+                    pos_hash_map.put(obj_pos, o.hashCode());
+                    hash_node_map.put(o.hashCode(), tnode);
+                }else{
+                    pos_hash_map.put(obj_pos, o.hashCode());
                 }
-                
-                int edge_id = pg.addEdge(s.hashCode(), o.hashCode());
-                pg.addEdgeLabel(edge_id, p.getLocalName());
             }
         } else {
-            pg.addNodeProperty(s.hashCode(), p.getLocalName(), o.getLiteral().getValue().toString());
+            snode.addProperty(p.getLocalName(), o.getLiteral().getValue().toString());
         }
-    }   
-
-    private String getNodeString(Node node) {
-        if (node.isURI()) {
-            return node.getURI();
-        }
-        if (node.isBlank()) {
-            return node.getBlankNodeLabel();
-        }
-        if (node.isLiteral()) {
-            return node.getLiteral().toString();
-        }
-        return "";
     }
 
     @Override
@@ -98,9 +100,11 @@ public class Reader1 implements StreamRDF {
 
     @Override
     public void finish() {
-        //System.out.println("finish");
-        System.out.println("Number of RDF triples processed: " + cnt);
+        for (Map.Entry<Integer, PGNode> entry : hash_node_map.entrySet()) {
+            PGNode pgnode = entry.getValue();
+            pgwriter.writeNode(pgnode);
+        }
+
     }
 
 }
-

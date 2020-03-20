@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import maps.DirectMapping;
-import maps.GeneralMapping;
-import maps.SimpleMapping;
+import maps.complete.CompleteMapping;
+import maps.generic.GenericMapping;
+import maps.simple.SimpleMapping;
 import pgraph.PropertyGraph;
 
 public class Tester {
@@ -26,29 +26,19 @@ public class Tester {
 
         /*
         System.out.println("Simple instance mapping");
-        PropertyGraph pg;
         SimpleMapping sim = new SimpleMapping();
-        pg = sim.run("instance.ttl");
-        pg.exportAsYPG("./temp/sim.pgf");
-        */
+        sim.run("instance.nt","instance.ypg");*/
 
         /*
-        System.out.println("General Database Mapping");
-        GeneralDatabaseMapping gdm = new GeneralDatabaseMapping();
-        gdm.run("instance.ttl");
-        PropertyGraph instance = gdm.getPGInstance();
-        instance.exportAsYPG("./temp/gdm-instance.pgf");
-        PropertyGraph schema = gdm.getPGSchema();
-        schema.exportAsYPG("./temp/gdm-schema.pgf");
-        */
-                
+        System.out.println("Generic Database Mapping");
+        GenericMapping gdm = new GenericMapping();
+        gdm.run("instance.nt");*/
+        
+        
         System.out.println("Database Mapping");
-        DirectMapping dbm = new DirectMapping();
-        dbm.run("sp10k-instance.nt", "sp10k-schema.ttl");
-        PropertyGraph pgi = dbm.getPGInstance();
-        pgi.exportAsYPG("./test/ddm-instance.ypg");
-        PropertyGraph pgs = dbm.getPGSchema();
-        pgs.exportAsYPG("./test/ddm-schema.ypg");
+        CompleteMapping cdm = new CompleteMapping();
+        cdm.run("instance.nt", "schema.ttl");
+
 
         System.out.println("OK");
     }

@@ -13,20 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package maps;
+package maps.generic;
 
 import java.io.InputStream;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.util.FileManager;
 import pgraph.PropertyGraph;
+import writers.YPGWriter;
 
-public class GeneralMapping {
+public class GenericMapping {
 
     PropertyGraph pg_instance;
     PropertyGraph pg_schema;
 
-    public GeneralMapping() {
+    public GenericMapping() {
         pg_instance = new PropertyGraph();
         pg_schema = new PropertyGraph();
     }
@@ -71,12 +72,14 @@ public class GeneralMapping {
     public void runInstanceMapping(String inputFileName) {
         try {
             InputStream in = FileManager.get().open(inputFileName);
-            Reader2 reader = new Reader2();
+            YPGWriter pgwriter = new YPGWriter("instance.ypg");
+            pgwriter.begin();
+            Reader2 reader = new Reader2(pgwriter);
             RDFDataMgr.parse(reader, in, Lang.TTL);
-            pg_instance = reader.getPG();
             if (in == null) {
                 throw new IllegalArgumentException("File not found");
             }
+            pgwriter.end();
         } catch (Exception ex) {
             System.out.println("Error runInstanceMapping():" + ex.getMessage());
         }            

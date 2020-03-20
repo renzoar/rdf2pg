@@ -9,6 +9,6 @@
 _:genid1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.example.org/voc/City> .
 _:genid1 <http://www.example.org/voc/name> "Palo Alto" .
 _:genid1 <http://www.example.org/voc/country> _:genid2 .
-_:genid1 <http://www.example.org/voc/is_location_of> <http://www.example.org/data/Tesla_Inc> .
 _:genid2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.example.org/voc/Country> .
 _:genid2 <http://www.example.org/voc/name> "US" .
+_:genid2 <http://www.example.org/voc/is_location_of> <http://www.example.org/data/Tesla_Inc> .

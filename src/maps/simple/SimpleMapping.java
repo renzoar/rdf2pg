@@ -13,14 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package maps;
+package maps.simple;
 
 import java.io.InputStream;
+import java.util.Map;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.util.FileManager;
-import pgraph.PropertyGraph;
+import pgraph.PGNode;
+import writers.PGWriter;
+import writers.YPGWriter;
 
 public class SimpleMapping {
 
@@ -34,19 +37,33 @@ public class SimpleMapping {
         }
     }
 
-    public PropertyGraph run(String inputFileName) {
-        PropertyGraph pg = new PropertyGraph();
+    public void run(String inputFileName, String outputFilename) {
         try {
-            InputStream in = FileManager.get().open(inputFileName);
-            Reader1 reader = new Reader1();
-            RDFDataMgr.parse(reader, in, Lang.TTL);
-            pg = reader.getPG();
-            if (in == null) {
+            PGWriter pgwriter = new YPGWriter(outputFilename);
+            pgwriter.begin();
+
+            Reader1a reader1a = new Reader1a(pgwriter);
+            InputStream in1 = FileManager.get().open(inputFileName);
+            RDFDataMgr.parse(reader1a, in1, Lang.TTL);
+            if (in1 == null) {
                 throw new IllegalArgumentException("File not found");
             }
+            in1.close();
+
+            Reader1b reader1b = new Reader1b(pgwriter);
+            reader1b.pos_hash_map = reader1a.pos_hash_map;
+            reader1b.hash_node_map = reader1a.hash_node_map;
+
+            InputStream in2 = FileManager.get().open(inputFileName);
+            RDFDataMgr.parse(reader1b, in2, Lang.TTL);
+            if (in2 == null) {
+                throw new IllegalArgumentException("File not found");
+            }
+            in2.close();
+
+            pgwriter.end();
         } catch (Exception ex) {
             System.out.println("Error SimpleMapping.run():" + ex.getMessage());
-        }        
-        return pg;
+        }
     }
 }

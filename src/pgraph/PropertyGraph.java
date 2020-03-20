@@ -16,7 +16,6 @@
 package pgraph;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -33,11 +32,10 @@ public class PropertyGraph {
     HashMap<Integer, Integer> targetnodes = new HashMap();
     Integer free_id = 1;
     HashMap<Integer,Integer> map = new HashMap();
-    
 
     public PropertyGraph() {
     }
-
+    
     public boolean hasNode(int id) {
         return nodes.containsKey(id);
     }

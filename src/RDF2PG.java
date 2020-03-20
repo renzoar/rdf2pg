@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import maps.DirectMapping;
-import maps.GeneralMapping;
-import maps.SimpleMapping;
+import maps.complete.CompleteMapping;
+import maps.generic.GenericMapping;
+import maps.simple.SimpleMapping;
 import pgraph.PropertyGraph;
 
 public class RDF2PG {
@@ -33,29 +33,26 @@ public class RDF2PG {
             if (opt.compareTo("-sdm") == 0) {
                 System.out.println("Running Simple Database Mapping");
                 SimpleMapping smap = new SimpleMapping();
-                PropertyGraph pg = smap.run(input_filename);
-                pg.exportAsYPG("instance.ypg");
+                smap.run(input_filename,"instance.ypg");
                 System.out.println("Output: instance.ypg");
             } else if (opt.compareTo("-gdm") == 0) {
                 System.out.println("Running Generic Database Mapping");
-                GeneralMapping gdm = new GeneralMapping();
+                GenericMapping gdm = new GenericMapping();
                 gdm.run(input_filename);
-                PropertyGraph instance = gdm.getPGInstance();
-                instance.exportAsYPG("instance.ypg");
+                //PropertyGraph instance = gdm.getPGInstance();
+                //instance.exportAsYPG("instance.ypg");
                 PropertyGraph schema = gdm.getPGSchema();
                 schema.exportAsYPG("schema.ypg");
                 System.out.println("Output: instance.ypg and schema.ypg");
             } else if (opt.compareTo("-csm") == 0) {
                 System.out.println("Running Complete Schema Mapping");
-                DirectMapping dbm = new DirectMapping();
-                PropertyGraph pg = dbm.runSchemaMapping(input_filename);
-                pg.exportAsYPG("schema.ypg");
+                CompleteMapping dbm = new CompleteMapping();
+                dbm.runSchemaMapping(input_filename);
                 System.out.println("Output: schema.ypg");
             } else if (opt.compareTo("-cim") == 0) {
                 System.out.println("Running Complete Instance Mapping");
-                DirectMapping dbm = new DirectMapping();
-                PropertyGraph pg = dbm.runInstanceMapping(input_filename);
-                pg.exportAsYPG("instance.ypg");
+                CompleteMapping dbm = new CompleteMapping();
+                dbm.runInstanceMapping(input_filename);
                 System.out.println("Output: instance.ypg");
             } else {
                 System.out.println("Invalid option");
@@ -70,12 +67,8 @@ public class RDF2PG {
             String rdfs_filename = String.valueOf(args[2]);
             if (opt.compareTo("-cdm") == 0) {
                 System.out.println("Running Complete Database Mapping");
-                DirectMapping dbm = new DirectMapping();
-                dbm.run(rdf_filename, rdfs_filename);
-                PropertyGraph pg_schema = dbm.getPGSchema();
-                pg_schema.exportAsYPG("schema.ypg");
-                PropertyGraph pg_instance = dbm.getPGInstance();
-                pg_instance.exportAsYPG("instance.ypg");
+                CompleteMapping cdm = new CompleteMapping();
+                cdm.run(rdf_filename, rdfs_filename);
                 System.out.println("Output: instance.ypg and schema.ypg");
             } else {
                 System.out.println("Invalid option");
