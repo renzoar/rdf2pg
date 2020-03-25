@@ -1,3 +1,6 @@
+
+import maps.simple.SimpleMapping;
+
 /* 
  * Copyright 2020 Renzo Angles (http://renzoangles.com/)
  * 
@@ -13,34 +16,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import maps.complete.CompleteMapping;
-import maps.generic.GenericMapping;
-import maps.simple.SimpleMapping;
-import pgraph.PropertyGraph;
-import writers.YPGWriter;
-
-public class Tester {
+/**
+ *
+ * Class to test the result of the simple instance mapping with Neo4j
+ */
+public class Neo4jTester {
 
     public static void main(String[] args) {
-
-        /*
-        System.out.println("Simple database mapping");
         SimpleMapping sim = new SimpleMapping();
-        sim.run("instance.nt");
-        */
-
-        /*
-        System.out.println("Generic database mapping");
-        GenericMapping gdm = new GenericMapping();
-        gdm.run("instance.nt");
-        */
-        
-        System.out.println("Complete database mapping");
-        CompleteMapping cdm = new CompleteMapping();
-        cdm.run("instance.nt", "schema.ttl");
-
-        System.out.println("OK");
+        Neo4jWriter pgwriter = new Neo4jWriter("instance.txt");
+        sim.run("instance.nt", pgwriter);
     }
 
 }

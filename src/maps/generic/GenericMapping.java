@@ -19,7 +19,10 @@ import java.io.InputStream;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.util.FileManager;
+import pgraph.PGEdge;
+import pgraph.PGNode;
 import pgraph.PropertyGraph;
+import writers.PGWriter;
 import writers.YPGWriter;
 
 public class GenericMapping {
@@ -32,11 +35,6 @@ public class GenericMapping {
         pg_schema = new PropertyGraph();
     }
 
-    public void run(String RDF_filename) {
-        this.runInstanceMapping(RDF_filename);
-        this.runSchemaMapping();
-    }
-
     public PropertyGraph getPGInstance() {
         return pg_instance;
     }
@@ -44,35 +42,21 @@ public class GenericMapping {
     public PropertyGraph getPGSchema() {
         return pg_schema;
     }
-    
-    public void runSchemaMapping() {
-        Integer resource_id = pg_schema.addNode("Resource");
-        pg_schema.addNodeProperty(resource_id,"iri", "String");
-        Integer bnode_id = pg_schema.addNode("BlankNode");
-        pg_schema.addNodeProperty(bnode_id, "id", "String");
-        Integer literal_id = pg_schema.addNode("Literal");
-        pg_schema.addNodeProperty(literal_id, "value", "String");
-        pg_schema.addNodeProperty(literal_id, "type", "String");
-        Integer e1 = pg_schema.addEdge("ObjectProperty", resource_id, resource_id);
-        pg_schema.addEdgeProperty(e1, "type", "String");
-        Integer e2 = pg_schema.addEdge("ObjectProperty", resource_id, bnode_id);
-        pg_schema.addEdgeProperty(e2, "type", "String");
-        Integer e3 = pg_schema.addEdge("ObjectProperty", bnode_id, resource_id);
-        pg_schema.addEdgeProperty(e3, "type", "String");
-        Integer e4 = pg_schema.addEdge("ObjectProperty", bnode_id, bnode_id);
-        pg_schema.addEdgeProperty(e4, "type", "String");
-        Integer e5 = pg_schema.addEdge("DatatypeProperty", resource_id, literal_id);
-        pg_schema.addEdgeProperty(e5, "type", "String");
-        Integer e6 = pg_schema.addEdge("DatatypeProperty", bnode_id, literal_id);
-        pg_schema.addEdgeProperty(e6, "type", "String");
-    }
-    
-    
 
-    public void runInstanceMapping(String inputFileName) {
+    public void run(String inputFileName) {
+        PGWriter instance_pgwriter = new YPGWriter("instance.ypg");
+        PGWriter schema_pgwriter = new YPGWriter("schema.ypg");
+        this.run(inputFileName, instance_pgwriter, schema_pgwriter);
+    }
+
+    public void run(String inputFileName, PGWriter instance_pgwriter, PGWriter schema_pgwriter) {
+        this.runInstanceMapping(inputFileName, instance_pgwriter);
+        this.runSchemaMapping(schema_pgwriter);
+    }
+
+    public void runInstanceMapping(String inputFileName, PGWriter pgwriter) {
         try {
             InputStream in = FileManager.get().open(inputFileName);
-            YPGWriter pgwriter = new YPGWriter("instance.ypg");
             pgwriter.begin();
             Reader2 reader = new Reader2(pgwriter);
             RDFDataMgr.parse(reader, in, Lang.TTL);
@@ -81,10 +65,65 @@ public class GenericMapping {
             }
             pgwriter.end();
         } catch (Exception ex) {
-            System.out.println("Error runInstanceMapping():" + ex.getMessage());
-        }            
+            System.out.println("Error: " + ex.getMessage());
+        }
     }
 
- 
+    public void runSchemaMapping(PGWriter pgwriter) {
+        try {
+            pgwriter.begin();
+
+            PGNode rnode = new PGNode(1);
+            rnode.addLabel("Resource");
+            rnode.addProperty("iri", "String");
+            pgwriter.writeNode(rnode);
+            
+            PGNode bnode = new PGNode(2);
+            bnode.addLabel("BlankNode");
+            bnode.addProperty("id", "String");
+            pgwriter.writeNode(bnode);
+
+            PGNode lnode = new PGNode(3);
+            lnode.addLabel("Literal");
+            lnode.addProperty("value", "String");
+            lnode.addProperty("type", "String");
+            pgwriter.writeNode(lnode);
+            
+            PGEdge edge4 = new PGEdge(4,rnode.getId(),rnode.getId());
+            edge4.addLabel("ObjectProperty");
+            edge4.addProperty("type","String");
+            pgwriter.writeEdge(edge4);
+
+            PGEdge edge5 = new PGEdge(5,rnode.getId(),bnode.getId());
+            edge5.addLabel("ObjectProperty");
+            edge5.addProperty("type","String");
+            pgwriter.writeEdge(edge5);
+            
+            PGEdge edge6 = new PGEdge(6,bnode.getId(),rnode.getId());
+            edge6.addLabel("ObjectProperty");
+            edge6.addProperty("type","String");
+            pgwriter.writeEdge(edge6);
+
+            PGEdge edge7 = new PGEdge(7,bnode.getId(),bnode.getId());
+            edge7.addLabel("ObjectProperty");
+            edge7.addProperty("type","String");
+            pgwriter.writeEdge(edge7);
+            
+            PGEdge edge8 = new PGEdge(8,rnode.getId(),lnode.getId());
+            edge8.addLabel("DatatypeProperty");
+            edge8.addProperty("type","String");
+            pgwriter.writeEdge(edge8);
+
+            PGEdge edge9 = new PGEdge(9,bnode.getId(),lnode.getId());
+            edge9.addLabel("DatatypeProperty");
+            edge9.addProperty("type","String");
+            pgwriter.writeEdge(edge9);
+            
+            pgwriter.end();
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+
+    }
 
 }

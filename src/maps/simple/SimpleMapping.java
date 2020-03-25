@@ -16,30 +16,22 @@
 package maps.simple;
 
 import java.io.InputStream;
-import java.util.Map;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.util.FileManager;
-import pgraph.PGNode;
 import writers.PGWriter;
 import writers.YPGWriter;
 
 public class SimpleMapping {
-
-    private String getString(RDFNode node) {
-        if (node.isURIResource()) {
-            return node.asResource().getURI();
-        } else if (node.isAnon()) {
-            return node.asResource().getId().getLabelString();
-        } else {
-            return node.asLiteral().getString();
-        }
+    
+    public void run(String input_instance_filename) {
+        PGWriter pgwriter = new YPGWriter("instance.ypg");
+        this.run(input_instance_filename, pgwriter);
     }
-
-    public void run(String inputFileName, String outputFilename) {
+        
+    public void run(String inputFileName, PGWriter pgwriter) {
         try {
-            PGWriter pgwriter = new YPGWriter(outputFilename);
             pgwriter.begin();
 
             Reader1a reader1a = new Reader1a(pgwriter);
@@ -66,4 +58,16 @@ public class SimpleMapping {
             System.out.println("Error SimpleMapping.run():" + ex.getMessage());
         }
     }
+    
+    private String getString(RDFNode node) {
+        if (node.isURIResource()) {
+            return node.asResource().getURI();
+        } else if (node.isAnon()) {
+            return node.asResource().getId().getLabelString();
+        } else {
+            return node.asLiteral().getString();
+        }
+    }
+    
+    
 }

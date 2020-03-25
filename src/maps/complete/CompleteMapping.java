@@ -42,30 +42,18 @@ public class CompleteMapping {
     private HashMap<String, String> prefixes;
     private int free_prefix = 1;
 
-    public CompleteMapping() {
-        pg_schema = new PGSchema();
-        prefixes = new HashMap();
-        prefixes.put("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf");
-        prefixes.put("http://www.w3.org/2000/01/rdf-schema#", "rdfs");
-        prefixes.put("http://www.w3.org/2002/07/owl#", "owl");
-        prefixes.put("http://www.w3.org/2001/XMLSchema#", "xsd");
-    }
-
-    private String addPrefix(String namespace) {
-        if (prefixes.containsKey(namespace)) {
-            return prefixes.get(namespace);
-        }
-        String new_prefix = "nss" + free_prefix++;
-        prefixes.put(namespace, new_prefix);
-        return new_prefix;
-    }
-
     public void run(String input_instance_filename, String input_schema_filename) {
-        this.runSchemaMapping(input_schema_filename);
-        this.runInstanceMapping(input_instance_filename);
+        PGWriter schema_pgwriter = new YPGWriter("schema.ypg");
+        PGWriter instance_pgwriter = new YPGWriter("instance.ypg");
+        this.run(input_instance_filename, input_schema_filename, instance_pgwriter, schema_pgwriter);
     }
-
-    public void runSchemaMapping(String input_schema_filename) {
+    
+    public void run(String input_instance_filename, String input_schema_filename, PGWriter instance_pgwriter, PGWriter schema_pgwriter) {
+        this.runSchemaMapping(input_schema_filename, schema_pgwriter);
+        this.runInstanceMapping(input_instance_filename, instance_pgwriter);
+    }
+    
+    public void runSchemaMapping(String input_schema_filename, PGWriter pgwriter) {
         HashMap<Integer,Integer> hash_id_map = new HashMap();
         int oid = 1;
 
@@ -135,7 +123,6 @@ public class CompleteMapping {
 
         }
                 
-        PGWriter pgwriter = new YPGWriter("schema.ypg");
         pgwriter.begin();
         Iterator<PGNode> it1 = pg_schema.getNodes();
         while(it1.hasNext()){
@@ -150,12 +137,11 @@ public class CompleteMapping {
         pgwriter.end();
     }
 
-    public void runInstanceMapping(String input_instance_filename) {
+    public void runInstanceMapping(String input_instance_filename, PGWriter pgwriter) {
         HashMap<Integer, Integer> pos_hash_map = new HashMap();
         HashMap<Integer, PGNode> hash_node_map = new HashMap();
 
         try {
-            PGWriter pgwriter = new YPGWriter("instance.ypg");
             pgwriter.begin();
 
             Reader3a reader3a = new Reader3a(pgwriter);
@@ -185,5 +171,23 @@ public class CompleteMapping {
             System.out.println("Error in runInstanceMapping()");
             System.out.println(ex.getMessage());
         }
+    }
+
+    public CompleteMapping() {
+        pg_schema = new PGSchema();
+        prefixes = new HashMap();
+        prefixes.put("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf");
+        prefixes.put("http://www.w3.org/2000/01/rdf-schema#", "rdfs");
+        prefixes.put("http://www.w3.org/2002/07/owl#", "owl");
+        prefixes.put("http://www.w3.org/2001/XMLSchema#", "xsd");
+    }
+
+    private String addPrefix(String namespace) {
+        if (prefixes.containsKey(namespace)) {
+            return prefixes.get(namespace);
+        }
+        String new_prefix = "nss" + free_prefix++;
+        prefixes.put(namespace, new_prefix);
+        return new_prefix;
     }
 }

@@ -33,27 +33,15 @@ public class RDF2PG {
             if (opt.compareTo("-sdm") == 0) {
                 System.out.println("Running Simple Database Mapping");
                 SimpleMapping smap = new SimpleMapping();
-                smap.run(input_filename,"instance.ypg");
+                smap.run(input_filename);
                 System.out.println("Output: instance.ypg");
             } else if (opt.compareTo("-gdm") == 0) {
                 System.out.println("Running Generic Database Mapping");
                 GenericMapping gdm = new GenericMapping();
                 gdm.run(input_filename);
-                //PropertyGraph instance = gdm.getPGInstance();
-                //instance.exportAsYPG("instance.ypg");
                 PropertyGraph schema = gdm.getPGSchema();
                 schema.exportAsYPG("schema.ypg");
                 System.out.println("Output: instance.ypg and schema.ypg");
-            } else if (opt.compareTo("-csm") == 0) {
-                System.out.println("Running Complete Schema Mapping");
-                CompleteMapping dbm = new CompleteMapping();
-                dbm.runSchemaMapping(input_filename);
-                System.out.println("Output: schema.ypg");
-            } else if (opt.compareTo("-cim") == 0) {
-                System.out.println("Running Complete Instance Mapping");
-                CompleteMapping dbm = new CompleteMapping();
-                dbm.runInstanceMapping(input_filename);
-                System.out.println("Output: instance.ypg");
             } else {
                 System.out.println("Invalid option");
             }
@@ -84,10 +72,6 @@ public class RDF2PG {
             System.out.println("$ java -jar rdf2pg -gdm <RDF_filename>");
             System.out.println("// Direct database mapping (schema-dependent)");
             System.out.println("$ java -jar rdf2pg -cdm <RDF_filename> <RDFS_filename>");
-            System.out.println("// Direct instance mapping");
-            System.out.println("$ java -jar rdf2pg -cim <RDF_filename>");
-            System.out.println("// Direct schema mapping");
-            System.out.println("$ java -jar rdf2pg -csm <RDFS_filename>");
             return;
         }
     }
