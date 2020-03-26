@@ -16,7 +16,6 @@
 package maps.generic;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.Triple;
 import org.apache.jena.riot.system.StreamRDF;
@@ -96,7 +95,7 @@ public class Reader2 implements StreamRDF {
             tnode.addProperty("type", o.getLiteral().getDatatypeURI());
             pgwriter.writeNode(tnode);
             
-            PGEdge edge = new PGEdge(triple.hashCode(),snode.getId(),tnode.getId());
+            PGEdge edge = new PGEdge(oid++,snode.getId(),tnode.getId());
             edge.addLabel("DatatypeProperty");
             edge.addProperty("type", p.getURI());
             pgwriter.writeEdge(edge);

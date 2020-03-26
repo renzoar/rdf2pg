@@ -148,7 +148,7 @@ public class Neo4jWriter implements PGWriter{
         if (edge.propertiesCounter() == 0) {
             line = "CREATE (n" + snode_oid + ")-[e" + edge_id + labels + "]->(n" + tnode_oid + ")" + "\n";
         } else {
-            line = "CREATE (n" + snode_oid + ")-[e" + edge_id + labels + " {n" + props + "}]->(" + tnode_oid + ")" + "\n";
+            line = "CREATE (n" + snode_oid + ")-[e" + edge_id + labels + " {n" + props + "}]->(n" + tnode_oid + ")" + "\n";
         }
         this.writeLine(line);
     }
