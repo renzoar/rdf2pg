@@ -1,5 +1,5 @@
 # rdf2pg
-A java app to transform RDF databases into Property Graph databases
+A java application to transform RDF databases into Property Graph databases.
 
 Usage:
 
@@ -7,10 +7,10 @@ Usage:
 
 $ java -jar rdf2pg -sdm <RDF_filename>
 
-# General database mapping (schema-independent)
+## General database mapping (schema-independent)
 
 $ java -jar rdf2pg -gdm <RDF_filename>
 
-# Direct database mapping (schema-dependent)
+## Direct database mapping (schema-dependent)
 
 $ java -jar rdf2pg -cdm <RDF_filename> <RDFS_filename>
