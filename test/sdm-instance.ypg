@@ -1,0 +1,8 @@
+33[Country]:{name:"US"}
+12[Person]:{birthName:"Elon Musk",age:"46"}
+15[City]:{name:"Palo Alto"}
+1[Organisation]:{name:"Tesla, Inc.",creation:"2003-07-01"}
+(1)-[ceo]->(12)
+(1)-[location]->(15)
+(15)-[country]->(33)
+(33)-[is_location_of]->(1)

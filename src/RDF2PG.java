@@ -31,12 +31,12 @@ public class RDF2PG {
             String input_filename = String.valueOf(args[1]);
             itime = System.currentTimeMillis();
             if (opt.compareTo("-sdm") == 0) {
-                System.out.println("Running Simple Database Mapping");
+                System.out.println("Running simple database mapping");
                 SimpleMapping smap = new SimpleMapping();
                 smap.run(input_filename);
                 System.out.println("Output: instance.ypg");
             } else if (opt.compareTo("-gdm") == 0) {
-                System.out.println("Running Generic Database Mapping");
+                System.out.println("Running generic database mapping");
                 GenericMapping gdm = new GenericMapping();
                 gdm.run(input_filename);
                 PropertyGraph schema = gdm.getPGSchema();
@@ -54,7 +54,7 @@ public class RDF2PG {
             String rdf_filename = String.valueOf(args[1]);
             String rdfs_filename = String.valueOf(args[2]);
             if (opt.compareTo("-cdm") == 0) {
-                System.out.println("Running Complete Database Mapping");
+                System.out.println("Running complete database mapping");
                 CompleteMapping cdm = new CompleteMapping();
                 cdm.run(rdf_filename, rdfs_filename);
                 System.out.println("Output: instance.ypg and schema.ypg");
@@ -66,11 +66,11 @@ public class RDF2PG {
 
         } else {
             System.out.println("Usage:");
-            System.out.println("// Simple instance mapping");
+            System.out.println("// Simple database mapping");
             System.out.println("$ java -jar rdf2pg -sdm <RDF_filename>");
             System.out.println("// General database mapping (schema-independent)");
             System.out.println("$ java -jar rdf2pg -gdm <RDF_filename>");
-            System.out.println("// Direct database mapping (schema-dependent)");
+            System.out.println("// Complete database mapping (schema-dependent)");
             System.out.println("$ java -jar rdf2pg -cdm <RDF_filename> <RDFS_filename>");
             return;
         }

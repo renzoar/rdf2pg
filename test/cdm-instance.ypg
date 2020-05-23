@@ -1,0 +1,8 @@
+15[nss1_City]:{id:"_:b1500661891",nss1_name:"Palo Alto"}
+12[nss1_Person]:{iri:"http://www.example.org/data/Elon_Musk",nss1_birthName:"Elon Musk",nss1_age:"46"}
+1[nss1_Organisation]:{iri:"http://www.example.org/data/Tesla_Inc",nss1_name:"Tesla, Inc.",nss1_creation:"2003-07-01"}
+33[nss1_Country]:{id:"_:b798056044",nss1_name:"US"}
+(1)-[nss1_ceo]->(12)
+(1)-[nss1_location]->(15)
+(15)-[nss1_country]->(33)
+(33)-[nss1_is_location_of]->(1)

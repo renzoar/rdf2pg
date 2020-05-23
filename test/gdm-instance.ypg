@@ -1,0 +1,28 @@
+1[Resource]:{iri:"http://www.example.org/data/Tesla_Inc"}
+2[Resource]:{iri:"http://www.example.org/voc/Organisation"}
+(1)-[ObjectProperty {type:"http://www.w3.org/1999/02/22-rdf-syntax-ns#type"}]->(2)
+4[Literal]:{value:"Tesla, Inc.",type:"http://www.w3.org/2001/XMLSchema#string"}
+(1)-[DatatypeProperty {type:"http://www.example.org/voc/name"}]->(4)
+6[Literal]:{value:"2003-07-01",type:"http://www.w3.org/2001/XMLSchema#date"}
+(1)-[DatatypeProperty {type:"http://www.example.org/voc/creation"}]->(6)
+8[Resource]:{iri:"http://www.example.org/data/Elon_Musk"}
+(1)-[ObjectProperty {type:"http://www.example.org/voc/ceo"}]->(8)
+10[BlankNode]:{id:"_:b1500105655"}
+(1)-[ObjectProperty {type:"http://www.example.org/voc/location"}]->(10)
+12[Resource]:{iri:"http://www.example.org/voc/Person"}
+(8)-[ObjectProperty {type:"http://www.w3.org/1999/02/22-rdf-syntax-ns#type"}]->(12)
+14[Literal]:{value:"Elon Musk",type:"http://www.w3.org/2001/XMLSchema#string"}
+(8)-[DatatypeProperty {type:"http://www.example.org/voc/birthName"}]->(14)
+16[Literal]:{value:"46",type:"http://www.w3.org/2001/XMLSchema#int"}
+(8)-[DatatypeProperty {type:"http://www.example.org/voc/age"}]->(16)
+18[Resource]:{iri:"http://www.example.org/voc/City"}
+(10)-[ObjectProperty {type:"http://www.w3.org/1999/02/22-rdf-syntax-ns#type"}]->(18)
+20[Literal]:{value:"Palo Alto",type:"http://www.w3.org/2001/XMLSchema#string"}
+(10)-[DatatypeProperty {type:"http://www.example.org/voc/name"}]->(20)
+22[BlankNode]:{id:"_:b1762775844"}
+(10)-[ObjectProperty {type:"http://www.example.org/voc/country"}]->(22)
+24[Resource]:{iri:"http://www.example.org/voc/Country"}
+(22)-[ObjectProperty {type:"http://www.w3.org/1999/02/22-rdf-syntax-ns#type"}]->(24)
+26[Literal]:{value:"US",type:"http://www.w3.org/2001/XMLSchema#string"}
+(22)-[DatatypeProperty {type:"http://www.example.org/voc/name"}]->(26)
+(22)-[ObjectProperty {type:"http://www.example.org/voc/is_location_of"}]->(1)

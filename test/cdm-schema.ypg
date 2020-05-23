@@ -1,0 +1,9 @@
+1[Namespace]:{iri:"String",prefix:"String"}
+2[nss1_Organisation]:{nss1_name:"string",nss1_creation:"date"}
+3[nss1_City]:{nss1_name:"string"}
+4[nss1_Country]:{nss1_name:"string"}
+5[nss1_Person]:{nss1_birthName:"string",nss1_age:"int"}
+(3)-[nss1_is_location_of]->(2)
+(3)-[nss1_country]->(4)
+(2)-[nss1_location]->(3)
+(2)-[nss1_ceo]->(5)
