@@ -1,5 +1,6 @@
 # rdf2pg
 A java application to transform RDF databases into Property Graph (PG) databases.
+rdf2pg implements three transformation methods described in the journal article "Mapping RDF Databases to Property Graph Databases" (IEEE Access, May 2020), which is available at https://ieeexplore.ieee.org/document/9088985
 
 Usage:
 
